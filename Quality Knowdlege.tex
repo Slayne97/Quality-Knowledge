@@ -431,7 +431,7 @@ The variance is a measure of how spread out the values of the random
 variable are from the expected value or the mean.
 
 \begin{gather}
-  Var(X) = E[(X- \mu)^2] = \sum_x P(X=x) \cdot (x - \mu)^2 
+  \sigma^2 = Var(X) = E[(X- \mu)^2] = \sum_x P(X=x) \cdot (x - \mu)^2 
 \end{gather}
   
 
@@ -1609,8 +1609,44 @@ The calculation and definition of the different standard deviations in
 this sections is based upon what Minitab has in its documentation about
 Capability Analysis.
 
+\hypertarget{definitions}{%
+\paragraph{Definitions}\label{definitions}}
+
+\begin{center}
+  
+% \begin{tabular}{@{}lcr@{}}
+\begin{tabular}{l l l}
+  \toprule
+  \textbf{Symbol}  & \textbf{Meaning} \\
+  \midrule
+  \( T \)                         & \(=\) target \\
+  \( LSL \)                       & \(=\) lower specification limit \\
+  \( USL \)                       & \(=\) upper specification limit \\
+  \( \mu \)                       & \(=\) process mean \\
+  \( tol \)                       & \(=\) sigma tolerance \\
+  \( m \)                         & \(=\) midpoint of LSL and USL \\
+  \( \bar x \)                    & \(=\) estimate of process mean \\
+  \( \sigma_{Within} \)           & \(=\) within subgroup process standard deviation \\
+  \( \hat \sigma_{Within} \)      & \(=\) estimate of within subgroup process standard deviation \\
+  \( n \)                         & \(=\) total number of observations \\
+  \( n_i \)                       & \(=\) number of observations in subgroup \(i\) \\
+  \( C_4(n_i) \)                  & \(=\) unbiasing constant for subgroups of size \(n_i\) (for use with sample standard deviations)\\
+  \( d_2(n_i) \)                  & \(=\) unbiasing constant for subgroups of size \(n_i\) (for use with sample standard deviations)\\
+  \( \sigma_{Overall} \)          & \(=\) overall process standard deviation \\
+  \( \hat \sigma_{Overall} \)     & \(=\) estimate of the overall process standard deviation \\
+  \( P(X) \)                      & \(=\) probability of event \(X\) \\
+  \( Z \)                         & \(=\) standard normal variable \\
+  \( x_i \)                       & \(=\) the \(i\)th observation \\
+  \( x_{ij} \)                    & \(=\) the \(j\)th obersvation of the \(i\)th subgroup \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+
+
 \hypertarget{within-standard-deviation-sigma_within}{%
-\subsubsection{Within Standard Deviation \(\sigma_{within}\)}\label{within-standard-deviation-sigma_within}}
+\subsubsection{Within Standard Deviation \texorpdfstring{$\sigma_{\mathrm{within}}$}{sigma within}}\label{within-standard-deviation-sigma_within}}
+
 
 It's an estimate of the variation within the subgroups. If your data is
 collected properly, the within-subgroup variation should not be
@@ -1624,12 +1660,17 @@ Within-subgroup standard deviation is also used when the sample size =
 different.
 
 \hypertarget{subgroup-size-1}{%
-\subparagraph{Subgroup Size = 1}\label{subgroup-size-1}}
+\paragraph{Subgroup Size = 1}\label{subgroup-size-1}}
 
 When the subgroup size = 1, you can estimate the \(\sigma_{within}\)
 using one of the following methods:
 
-Average of Moving Range: \(\sigma_{xbar} = \frac{Rbar}{d_2(w)}\)
+\hypertarget{average-moving-range}{%
+\subparagraph{Method 1: Average of Moving Range}\label{average-moving-range}}
+
+\begin{gather}
+  \sigma_{\bar x} = \frac{\bar R}{d_2(w)}  
+\end{gather}
 
 Where: 
 \begin{itemize}
@@ -1639,12 +1680,12 @@ Where:
   \item \(w =\) The number of observations used in the moving range.
 \end{itemize}
 
-Now, the calculation of Rbar is not straightforward, first we need to
-calculate the Moving Range with a window size \(w\) which is denoted by
-\(R_i\).
+Now, the calculation of the moving range (\(MR\)) is not straightforward, it depends
+in the window size, in order to calculate the Moving Range with 
+a window size \(w\) you have the equation:
 
 \begin{gather}
-  R_i = | \text{Max}[x_{i}, ...,  x_{i-w+1}] - \text{Min}[X_i, ..., X_{i-w+1}]| \ \ \text{for} \ i=w, \ ..., \ n
+  MR_i = | \text{Max}[x_{i}, ...,  x_{i-w+1}] - \text{Min}[X_i, ..., X_{i-w+1}]| \ \ \text{for} \ i=w, \ ..., \ n
 \end{gather}
 
 This equation represents the calculation of the range of a sliding
@@ -1654,11 +1695,19 @@ represented by the parameter \(w\), which specifies the number of
 elements to include in each window. The equation calculates the
 difference between the maximum and minimum values within each sliding
 window of size w, and stores the resulting range values in a new vector
-\(R\)
+\(MR\)
+
+A more simpler form of the equation is presentented when the value for \(w\) is \(2\), which
+is usually the most common case for the Moving Range. 
+
+\begin{gather}
+  MR_i = |x_i - x_{i-1}| \ \ \text{for} \ \ i=2,3,..., n
+\end{gather}
+
 
 Then, calculate the average of the moving range:
 \begin{gather}
-  \bar R = \frac{R_w + ... + R_n}{n-w+1}  
+   \overline{MR} = \frac{R_w + ... + R_n}{n-w+1}  
 \end{gather}
 
 
@@ -1667,15 +1716,16 @@ a sequence of numbers. It uses the range vector \(R\) calculated by the
 previous equation, where \(R_i\) represents the range of the i-the window
 of size w.
 
-\hypertarget{todo}{%
-\subparagraph{Todo:}\label{todo}}
+\hypertarget{median-moving-range}{%
+\subparagraph{Method 2: Median of Moving Range}\label{median-moving-range}}
 
-\textbf{Median of Moving Range:}
-\(\sigma_{xbar} = \frac{\overline{MR}}{d_4(w)}\)
+\begin{gather}
+  \sigma_{\bar x} = \frac{\widetilde{MR}}{d_4(w)}  
+\end{gather}
 
 Where: 
 \begin{itemize}
-  \item \(\overline{MR} =\) Median of the Moving Range. 
+  \item \(\widetilde{MR} =\) Median of the Moving Range. 
   \item \(w\) =  The number of observations used in the moving range. (AKA. The window size. Default is 2) 
 \end{itemize}
 
@@ -1684,8 +1734,46 @@ or more consecutive points. Use this method when the data have extreme
 ranges that influence average of the moving ranges
 
 \hypertarget{todo.-subgroup-size-1}{%
-\subparagraph{TODO. Subgroup Size \textgreater{}
-1}\label{todo.-subgroup-size-1}}
+\subparagraph{Subgroup Size \textgreater{} 1}\label{todo.-subgroup-size-1}}
+To estimate \(\sigma_{within}\) for subgroups of size bigger than one. You could use
+one of three different methods: 
+
+
+\hypertarget{pooled-standard-deviation}{
+\subparagraph*{Method 1: Pooled Standard Deviation}\label{pooled-standard-deviation}}
+A pooled standard deviation is just a weighted average of the variances
+from two or more groups of data when they are assumed to come from populations 
+with a common variance.
+
+The formula to obtain the unbiased estimator of \(\sigma_{Within}\) is given by:
+
+\begin{gather}
+  \sigma_{Within} = \frac{S_P}{C_4 (d+1)}
+\end{gather}
+
+Where the \(S_P\) is the Spooled Standard Deviation, and is given by: 
+
+\begin{gather}
+  S_P = \sqrt{\frac{\sum_i \sum_j (x_{ij} - \bar x_i)^2}{\sum_i(n_i - 1)}}
+\end{gather}
+
+Where: 
+\begin{itemize}
+  \item \(d\) = Degrees of freedom for \(S_p = \sum (n_i - 1)\).
+  \item \(x_{ij}\) = \(j^{th}\) observation in the \(i^{th}\) group. 
+  \item \(C_4(d+1)\) = Unbiasing constant.
+  \item \(\Gamma\) = Gamma function.
+\end{itemize}
+
+
+% TODO. 
+\hypertarget{average-of-subgroup-ranges}{
+\subparagraph*{Method 2: Average of Subgroup Ranges}\label{average-of-subgroup-ranges}}
+  
+  % TODO. 
+\hypertarget{average-of-subgroup-standard-deviations}{
+\subparagraph*{Method 3: Average of Subgroup Standard Deviations}\label{average-of-subgroup-standard-deviations}}
+
 
 \hypertarget{overall-standard-deviation-sigma_overall}{%
 \subsubsection{Overall Standard Deviation \(\sigma_{overall}\)}\label{overall-standard-deviation-sigma_overall}}
