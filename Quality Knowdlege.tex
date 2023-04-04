@@ -580,7 +580,7 @@ Then, if we graph \(e^{-x}\) it'll describe exponential decay
 
 So if we want our graph to be symmetrical, we could do something like
 \(e^{-|x|}\)
-But that would make a sharp point, so a better solution would be to
+But that would make a sharp point at \(x=0\), so a better solution would be to
 square the \(x\) value.
 
 This already gave us the basic bell-shape we were looking for.
@@ -615,7 +615,7 @@ This already gave us the basic bell-shape we were looking for.
 
 
 
-Now for the interesting part, if we trow a constant in front of the \(x\), this allows to stretch and
+Now for the interesting part, if we trow a constant in front of the \(x\), this allows us to stretch and
 squish the graph horizontally. Allowing us describe narrow and wider
 bell curves.  
 
@@ -1629,23 +1629,27 @@ different.
 When the subgroup size = 1, you can estimate the \(\sigma_{within}\)
 using one of the following methods:
 
-\textbf{Average of Moving Range:}
-\(\sigma_{xbar} = \frac{Rbar}{d_2(w)}\)
+Average of Moving Range: \(\sigma_{xbar} = \frac{Rbar}{d_2(w)}\)
 
-Where: - \(Rbar =\) The average moving range is the average value of the
-moving range of two or more consecutive points. - \(d_2 =\) An unbiasing
-constant read from a table - \(w =\) The number of observations used in
-the moving range.
+Where: 
+\begin{itemize}
+  \item \(\bar R =\) The average moving range is the average value of the
+  moving range of two or more consecutive points.
+  \item \(d_2 =\) An unbiasing constant read from a table 
+  \item \(w =\) The number of observations used in the moving range.
+\end{itemize}
 
 Now, the calculation of Rbar is not straightforward, first we need to
 calculate the Moving Range with a window size \(w\) which is denoted by
 \(R_i\).
 
-\(R_i = | \text{Max}[x_{i}, .. x_{i-w+1}] - \text{Min}[X_i, ..., X_{i-w+1}]| \ \ \text{for} \ i=w, \ ..., \ n\)
+\begin{gather}
+  R_i = | \text{Max}[x_{i}, ...,  x_{i-w+1}] - \text{Min}[X_i, ..., X_{i-w+1}]| \ \ \text{for} \ i=w, \ ..., \ n
+\end{gather}
 
 This equation represents the calculation of the range of a sliding
 window over a sequence of numbers. The sequence of numbers is
-represented by the vector \(X = [x1, x2, ..., xn]\). The window size is
+represented by the vector \(X = [x_1, x_2, ..., x_n]\). The window size is
 represented by the parameter \(w\), which specifies the number of
 elements to include in each window. The equation calculates the
 difference between the maximum and minimum values within each sliding
@@ -1653,11 +1657,14 @@ window of size w, and stores the resulting range values in a new vector
 \(R\)
 
 Then, calculate the average of the moving range:
-\(Rbar = \frac{R_w + ... + R_n}{n-w+1}\)
+\begin{gather}
+  \bar R = \frac{R_w + ... + R_n}{n-w+1}  
+\end{gather}
+
 
 This equation calculates the average range over all windows of size w in
-a sequence of numbers. It uses the range vector R calculated by the
-previous equation, where R\_i represents the range of the i-the window
+a sequence of numbers. It uses the range vector \(R\) calculated by the
+previous equation, where \(R_i\) represents the range of the i-the window
 of size w.
 
 \hypertarget{todo}{%
@@ -1666,9 +1673,11 @@ of size w.
 \textbf{Median of Moving Range:}
 \(\sigma_{xbar} = \frac{\overline{MR}}{d_4(w)}\)
 
-Where: - \(\overline{MR} =\) Median of the Moving Range. - \$w = \$ The
-number of observations used in the moving range. (AKA. The window size.
-Default is 2) - \$d\_4(w) = \$ An unbiasing constant read from a table.
+Where: 
+\begin{itemize}
+  \item \(\overline{MR} =\) Median of the Moving Range. 
+  \item \(w\) =  The number of observations used in the moving range. (AKA. The window size. Default is 2) 
+\end{itemize}
 
 The median moving range is the median value of the moving range of two
 or more consecutive points. Use this method when the data have extreme
