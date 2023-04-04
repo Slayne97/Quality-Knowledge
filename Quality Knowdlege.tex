@@ -79,6 +79,9 @@
     \usepackage{mathrsfs}
     \usepackage{amsmath}
     \usepackage{nccmath}
+    \usepackage{pgfplots}
+    \usepackage{subcaption}
+    \usepackage{hyperref}
 
     
     % Colors for the hyperref package
@@ -163,7 +166,8 @@
     \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
     % Document title
-    \title{Quality Knowdlege}
+    \title{Statistical Process Control}
+    \author{Jesus Cardenaz}
     
     
     
@@ -391,7 +395,7 @@
 \section{Statistics Refresher}\label{statistics-refresher}}
 
     \hypertarget{basic-statistics-an-shit}{%
-\subsection{Basic Statistics an shit}\label{basic-statistics-an-shit}}
+\subsection{Basic Statistics and shit}\label{basic-statistics-an-shit}}
 
     \hypertarget{mean-variance-and-standard-deviation.}{%
 \subsubsection{Mean, Variance and Standard
@@ -409,9 +413,11 @@ random variable, and it represents the \emph{average} value that we
 would expect to observe if we repeated the random experiment many times.
 It is defined by the following equation:
 
-\(\mu = E[X] = \sum_{x} P(X = x) \cdot x\)
+\begin{gather}
+  \mu = E[X] = \sum_{x} P(X = x) \cdot x
+\end{gather}
 
-Where: - \(x\) Represents values of the random variable \(X\)
+Where \(x\) Represents values of the random variable \(X\).
 
 You go through all possible outcomes and you multiply the probability of
 that outcome times the value of the variable.
@@ -424,11 +430,9 @@ that outcome times the value of the variable.
 The variance is a measure of how spread out the values of the random
 variable are from the expected value or the mean.
 
-\begin{ceqn}
-  \begin{align}
-    \(Var(X) = E[(X- \mu)^2] = \sum_x P(X=x) \cdot (x - \mu)^2\)
-  \end{align}
-\end{ceqn}
+\begin{gather}
+  Var(X) = E[(X- \mu)^2] = \sum_x P(X=x) \cdot (x - \mu)^2 
+\end{gather}
   
 
 
@@ -457,44 +461,60 @@ common way of interpreting spread is the Standard Deviation The Standard
 Deviation is another way of measure spread, it is the square root of the
 variance. It makes it easier to interpret the spread of a dataset.
 
-
-
 It measures how much the data values deviate from the mean or the
 expected value of the data set. A high standard deviation indicates that
 the data values are spread out over a larger range, while a low standard
 deviation indicates that the data values are clustered around the mean.
-\#\#\#\# Parameters vs Statistics Before start talking about normal
-distributions, we first need to know the difference between Parameters
-and Statistics. Parameters are numbers that describe the properties of
+
+\hypertarget{Parameters vs Statistics}{%
+\paragraph*{Parameters vs statistics}\label{parameters-vs-statistics}}
+Parameters are numbers that describe the properties of
 entire populations. Statistics are numbers that describe the properties
 of samples. For example, the average income for the United States is a
 population parameter. Conversely, the average income for a sample drawn
 from the U.S. is a sample statistic. Both values represent the mean
 income, but one is a parameter vs a statistic.
 
-\hypertarget{symbols}{%
-\paragraph{Symbols}\label{symbols}}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|c|c|c|}
+  \hline
+  \textbf{Summary Value} & \textbf{Parameter} & \textbf{Statistic} \\ \hline
+  Mean & $\mu$ or Mu & $\bar{x}$ or x-bar \\ \hline
+  Standard deviation & $\sigma$ or Sigma & $s$ \\ \hline
+  Correlation & $\rho$ or rho & $r$ \\ \hline
+  Proportion & $P$ & $\hat{p}$ or p-hat \\ \hline
+  \end{tabular}
+  \caption{Summary Statistics}
+  \label{tab:summary}
+\end{table}
+  
 
 \hypertarget{probability-distributions}{%
-\subsubsection{Probability
-Distributions}\label{probability-distributions}}
+\subsubsection{Probability Distributions}\label{probability-distributions}}
 
 A probability distribution is the \textbf{mathematical function} that
 gives the probabilities of occurrence of different possible outcomes for
 a random variable. It describes the distribution of the values that a
 random variable can take and their probabilities of occurrence.
 
-There are two main ways to represent the distribution of a set of data:
-\#\#\#\# Frequency Distributions A frequency distribution describes the
-number of observations for each possible value of a variable. The
+There are two main ways to represent the distribution of a set of data
+Frequency Distributions and Density Curves.
+
+\hypertarget{frequency-distributions}{%
+\paragraph{Frequency Distributions}\label{frequency-distributions}}
+
+A frequency distribution describes the number of observations for
+each possible value of a variable. The
 frequency of a value is the number of times it occurs in a dataset. A
 frequency distribution is the pattern of frequencies of a variable. It's
 the number of times each possible value of a variable occurs in a
 dataset.
 
-Mainly there are two kinds of frequency distributions: - Regular
-Frequency Distribution Tells us the number of values within given
-intervals. - Relative Frequency Distribution Tells us the proportion of
+Mainly there are two kinds of frequency distributions: Regular
+Frequency Distribution which tells us the number of values within certain 
+given
+intervals. And Relative Frequency Distribution, which tells us the proportion of
 values within any given interval.
 
 \hypertarget{density-curves}{%
@@ -509,7 +529,7 @@ Properties of density curves: - A density curve mus line on or above the
 horizontal axis. - The total area of the curve must equal to 1.
 
 \hypertarget{normal-distribution}{%
-\paragraph{Normal Distribution}\label{normal-distribution}}
+\subsubsection{Normal Distribution}\label{normal-distribution}}
 
 A normal distribution is a special type of density curve that is
 bell-shaped. In statistics, a \textbf{normal distribution} or
@@ -517,80 +537,175 @@ bell-shaped. In statistics, a \textbf{normal distribution} or
 distribution for a real-valued random variable. The general form of its
 probability density function is:
 
-\(f(x) = \frac{1}{\sigma \sqrt{2\pi}} \ e^{-\frac{1}{2}(\frac{x - \mu }{\sigma})^2}\)
+\begin{gather}
+  f(x) = \frac{1}{\sigma \sqrt{2\pi}}
+  \ e^{-\frac{1}{2}(\frac{x - \mu }{\sigma})^2}
+\end{gather}
 
+
+\paragraph{Building up the formula}
 To understand the formula, we're going to peel it off to the most basic
-form, and then construct it step by step
-
-\hypertarget{ex}{%
-\subparagraph{\texorpdfstring{\(e^x\)}{e\^{}x}}\label{ex}}
+form, and then build it up it step by step.
 
 The function \(e^x\) or anything to the \(x\) describes exponential
-growth
-
-
-\hypertarget{e-x}{%
-\subparagraph{\texorpdfstring{\(e^{-x}\)}{e\^{}\{-x\}}}\label{e-x}}
-
+growth. 
 Then, if we graph \(e^{-x}\) it'll describe exponential decay
 
-
-\hypertarget{e-x2}{%
-\subparagraph{\texorpdfstring{\(e^{-x^2}\)}{e\^{}\{-x\^{}2\}}}\label{e-x2}}
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.45\textwidth}
+    \begin{tikzpicture}
+      \begin{axis}[          xlabel=$x$,          ylabel=$y$,          xmin=-2, xmax=2,          ymin=0, ymax=4,          axis lines=middle,          thick,          samples=100,          domain=-2:2,          ]
+      \addplot [blue] {exp(x)};
+      \addlegendentry{\(e^{x}\)}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Plot 1}
+    \label{fig:plot1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.45\textwidth}
+    \begin{tikzpicture}
+      \begin{axis}[          xlabel=$x$,          ylabel=$y$,          xmin=-2, xmax=2,          ymin=0, ymax=4,          axis lines=middle,          thick,          samples=100,          domain=-2:2,          ]
+      \addplot [red] {exp(-x)};
+      \addlegendentry{\(e^{-x}\)}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Plot 2}
+    \label{fig:plot2}
+  \end{subfigure}
+  \caption{Two Plots Side by Side}
+  \label{fig:plots}
+\end{figure}
 
 So if we want our graph to be symmetrical, we could do something like
 \(e^{-|x|}\)
-
 But that would make a sharp point, so a better solution would be to
 square the \(x\) value.
 
 This already gave us the basic bell-shape we were looking for.
 
-\hypertarget{e-cx2}{%
-\subparagraph{\texorpdfstring{\(e^{-cx^2}\)}{e\^{}\{-cx\^{}2\}}}\label{e-cx2}}
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.45\textwidth}
+    \begin{tikzpicture}
+      \begin{axis}[          xlabel=$x$,          ylabel=$y$,          xmin=-2, xmax=2,          ymin=0, ymax=4,          axis lines=middle,          thick,          samples=100,          domain=-2:2,          ]
+      \addplot [blue] {exp(-abs(-x))};
+      \addlegendentry{\(e^{-|x|}\)}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Plot 1}
+    \label{fig:plot1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.45\textwidth}
+    \begin{tikzpicture}
+      \begin{axis}[          xlabel=$x$,          ylabel=$y$,          xmin=-2, xmax=2,          ymin=0, ymax=4,          axis lines=middle,          thick,          samples=100,          domain=-2:2,          ]
+      \addplot [red] {exp((-x^2))};
+      \addlegendentry{\(e^{-x^2}\)}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Plot 2}
+    \label{fig:plot2}
+  \end{subfigure}
+  \caption{Two Plots Side by Side}
+  \label{fig:plots}
+\end{figure}
 
-If we trow a constant in front of the \(x\), this allows to stretch and
+
+
+
+Now for the interesting part, if we trow a constant in front of the \(x\), this allows to stretch and
 squish the graph horizontally. Allowing us describe narrow and wider
-bell curves.
+bell curves.  
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.45\textwidth}
+    \begin{tikzpicture}
+      \begin{axis}[          xlabel=$x$,          ylabel=$y$,          xmin=-2, xmax=2,          ymin=0, ymax=4,          axis lines=middle,          thick,          samples=100,          domain=-2:2,          ]
+      \addplot [blue] {exp(-7*x^2)};
+      \addlegendentry{\(e^{-7x^2}\)}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Plot 1}
+    \label{fig:plot1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.45\textwidth}
+    \begin{tikzpicture}
+      \begin{axis}[          xlabel=$x$,          ylabel=$y$,          xmin=-2, xmax=2,          ymin=0, ymax=4,          axis lines=middle,          thick,          samples=100,          domain=-2:2,          ]
+      \addplot [red] {exp(-.5*x^2)};
+      \addlegendentry{\(e^{-0.5x^2}\)}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Plot 2}
+    \label{fig:plot2}
+  \end{subfigure}
+  \caption{Two Plots Side by Side}
+  \label{fig:plots}
+\end{figure}
 
 So if we want to describe the function by a value \(\sigma\) we would do
 something like: \(e^{-\frac{1}{2}(x/\sigma)^2}\) But before we can
 define our function by the standard deviation, we want it to be a
-probability density.
-
-\hypertarget{frac1sqrtpi-e-x2}{%
-\subparagraph{\texorpdfstring{\(\frac{1}{\sqrt\pi} e^{-x^2}\)}{\textbackslash frac\{1\}\{\textbackslash sqrt\textbackslash pi\} e\^{}\{-x\^{}2\}}}\label{frac1sqrtpi-e-x2}}
+probability density function (PDF).
 
 So we want this function to be a probability density function (PDF),
 that meaning that the total area under the curve of the function should
-be equal to one, this can be accomplished dividing by the square root of
-pi:
+be equal to one, this can be accomplished
+\href{https://youtu.be/cy8r7WSuT1I}{dividing by the square root of
+pi}:
 
-\hypertarget{frac1sigma-sqrt2pi-e-frac12-left-fracxsigma-right2}{%
-\subparagraph{\texorpdfstring{\(\frac{1}{\sigma \sqrt{2\pi}} \ e^{-\frac{1}{2} \left (\frac{x}{\sigma} \right)^2}\)}{\textbackslash frac\{1\}\{\textbackslash sigma \textbackslash sqrt\{2\textbackslash pi\}\} \textbackslash{} e\^{}\{-\textbackslash frac\{1\}\{2\} \textbackslash left (\textbackslash frac\{x\}\{\textbackslash sigma\} \textbackslash right)\^{}2\}}}\label{frac1sigma-sqrt2pi-e-frac12-left-fracxsigma-right2}}
+\begin{center}
+  \(\frac{1}{\sqrt\pi} e^{-x^2}\)
+\end{center}
 
 But, we would like to describe our function by the standard deviation
 \(\sigma\), so we also need to divide by that in order to the curve to
 still have an area of 1.
 
+\begin{center}
+  \(\frac{1}{\sigma \sqrt{2\pi}} \ e^{-\frac{1}{2} \left (\frac{x}{\sigma} \right)^2}\)
+\end{center}
+
 And this is already a valid normal distribution. Tweaking the value
 \(\sigma\) resulting in narrower or wider curves, would still mean that
 the area under the curve is one.
 
-The case where the standard deviation is one, is called \textbf{Standard
-Normal Distribution} and is given by:
+\hypertarget{standard-normal-distribution}{%
+\paragraph{Standard Normal Distribution}\label{standard-normal-distribution}}
+The case where the standard deviation is one, is called Standard
+Normal Distribution and is given by:
 
+\begin{gather}
+  \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2}x^2}
+\end{gather}
 
 Finally, if we subtract the mean \(\mu\) we can characterize all
-possible normal distributions.
+possible normal distributions, and this gives us the final Standard Normal Distribution 
+formula that we've seen.
 
+\begin{center}
+  \(\frac{1}{\sigma \sqrt{2\pi}} \ e^{-\frac{1}{2}(\frac{x - \mu }{\sigma})^2}\)
+\end{center}
 
-Properties: - The normal distribution is unimodal, which means that it
-has only one peak. - The normal curve is symmetric about its mean. - The
-parameters \(\mu\) and \(\sigma\) completely characterize the normal
-distribution. - \(X \text{~} N(\mu,\sigma)\)
+\hypertarget{properties-of-the-normal-distribution}{%
+\paragraph{Properties}\label{properties-of-the-normal-distribution}}
 
+The normal distribution is characterized by the following properties:
+\begin{itemize}
+\item The normal distribution is unimodal, which means that it has only one peak.
+\item The normal curve is symmetric about its mean.
+\item The parameters μ and \sigma completely characterize the normal distribution.
+\item \(X \sim N(\mu,\sigma)\)
+\end{itemize}
 
+The notation \(X \sim N(\mu,\sigma)\) represents a random variable \(X\) that follows
+a normal distribution with mean \(\mu\) and standard deviation \(\sigma\).
+
+\hypertarget{central-limit-theorem}{%
+\subsubsection{TODO: Central Limit Theorem}\label{central-limit-theorem}}
 The central limit theorem states that the distribution of a random
 variable in a sample will begin to approach a normal distribution as the
 sample size becomes larger, regardless of the true shape of the
@@ -599,15 +714,7 @@ distribution.
 Consider
 \(\frac{(X_1 + \ ... \ +X_N ) - N \cdot \mu}{\sigma \cdot \sqrt{N}}\)
 
-
-\hypertarget{measures-of-central-tendency}{%
-\paragraph{Measures of Central
-Tendency}\label{measures-of-central-tendency}}
-
-\hypertarget{measures-of-variability}{%
-\paragraph{Measures of Variability}\label{measures-of-variability}}
-
-    \hypertarget{statistical-models}{%
+\hypertarget{statistical-models}{%
 \subsection{Statistical models}\label{statistical-models}}
 
 A statistical model is a mathematical representation of observed data.
@@ -618,15 +725,19 @@ process in which an algorithm is used to analyze an existing data set of
 known points.
 
 \hypertarget{regression-models}{%
-\subsection{Regression Models}\label{regression-models}}
+\subsection{TODO: Regression Models}\label{regression-models}}
 
 Regression models are used to examine relationships between variables.
 Regression models are often used to determine which independent
-variables hold the most influence over dependent variables. \#\#\#
-Stepwise Regression \#\#\# Ridge regression \#\#\# Lassso regression
-\#\#\# Elastic net regression.
+variables hold the most influence over dependent variables.
+\begin{itemize}
+  \item Stepwise Regression.
+  \item Ridge regression.
+  \item Lassso regression. 
+  \item Elastic net regression.
+\end{itemize}
 
-    \hypertarget{statistical-hypothesis}{%
+\hypertarget{statistical-hypothesis}{%
 \subsection{Statistical Hypothesis}\label{statistical-hypothesis}}
 
 A statement about the nature of a population. It is often stated in
@@ -641,7 +752,7 @@ In SPC, null-hypothesis = process in control, alter-hypothesis = process
 not in control.
 
 \hypertarget{null-hypothesis-h_0}{%
-\subsubsection{Null-Hypothesis \$ H\_0 \$}\label{null-hypothesis-h_0}}
+\subsubsection{Null-Hypothesis \(H_0\)}\label{null-hypothesis-h_0}}
 
 It states that the results are due to chance and are not significant in
 terms of supporting the idea of being investigated. The null hypothesis
@@ -657,8 +768,7 @@ In SPC, the null hypothesis usually states that the process is under
 control, and any observed variation is due to chance.
 
 \hypertarget{alternative-hypothesis.-h_a}{%
-\subsubsection{Alternative hypothesis. \$ H\_a
-\$}\label{alternative-hypothesis.-h_a}}
+\subsubsection{Alternative hypothesis. \(H_a\)}\label{alternative-hypothesis.-h_a}}
 
 Represents a hypothesis of observations which are influenced by some
 non-random cause. The alternative hypothesis states that the independent
@@ -671,7 +781,7 @@ process is not under statistical control, and it's affected by some
 non-random variation (special variation).
 
 \hypertarget{directional-hypothesis}{%
-\subsubsection{Directional Hypothesis}\label{directional-hypothesis}}
+\subsubsection{TODO - Add Image: Directional Hypothesis}\label{directional-hypothesis}}
 
 In the Directional Hypothesis, the null hypothesis is rejected if the
 test score is too large or too small. Thus, the rejection region for
@@ -680,8 +790,7 @@ right-tailed test or the rejection region is on the left side from the
 center in the case of a left-tailed test.
 
 \hypertarget{non-directional-hypothesis}{%
-\subsubsection{Non-Directional
-Hypothesis}\label{non-directional-hypothesis}}
+\subsubsection{TODO - Add Image: Non-Directional Hypothesis}\label{non-directional-hypothesis}}
 
 In a non-directional hypothesis test, the null hypothesis is rejected if
 the test score is either too small or too large. Thus, the rejection
@@ -689,8 +798,7 @@ region for such test consist of two parts, one on the left and one on
 the right.
 
 \hypertarget{why-not-accept-the-null-hypothesis}{%
-\subsubsection{Why not accept the
-Null-Hypothesis?}\label{why-not-accept-the-null-hypothesis}}
+\paragraph{Why not accept the Null-Hypothesis?}\label{why-not-accept-the-null-hypothesis}}
 
 We assume that the null hypothesis is correct until we have enough
 evidence to suggest otherwise.
@@ -750,17 +858,15 @@ conclude that the effect exists, that lack of evidence doesn't prove
 that the effect does not exist.
 
 \hypertarget{example}{%
-\subsubsection{Example}\label{example}}
-
+\paragraph{Example}\label{example}}
 Suppose we wanted to check whether a coin was fair and balanced. A null
 hypothesis might say, that half flips will be of head and the other half
 will be tails. Whereas alternative hypothesis might say that flips of
 head and tail may be very different.
-
 For example if we flipped the coin 50 times, in which 40 heads an 10
 tails results.
 
-    \hypertarget{statistical-measures}{%
+\hypertarget{statistical-measures}{%
 \subsection{Statistical Measures}\label{statistical-measures}}
 
 \hypertarget{z-score}{%
@@ -771,7 +877,11 @@ relationship to the mean of a group of values. Z-score is measured in
 terms of standard deviations from the mean. If a Z-score is 0, it
 indicates that the data point's score is identical to the mean score.
 
-The formula for the Z-score: \(z=\frac{(x-\mu)}{\sigma}\)
+The formula for the Z-score: 
+\begin{gather}
+  z=\frac{(x-\mu)}{\sigma}
+\end{gather}
+
 
 The higher or lower a z-score is, the further away from the mean the
 point is.
@@ -900,8 +1010,9 @@ function (EDF)} is \(F_n(x)\) defined by:
 \(F_n(x) = \frac{n \leq x}{n}; -\infty < x < \infty\)
 
 More precisely, the definition is
-
-\(F_n(x) = \begin{cases}  & 0 \text{ if } x < x_1\\  & \frac{1}{n} \text{ if } x_1 \leq x <x_2 \\  & \frac{2}{n} \text{ if } x_2 \leq x < x_3 \\  & \vdots \\  & \frac{n-1}{n}\text{ if } x = x_(n-1) \leq x < x_n \\  & 1 \ \text{if} \ x \geq x_n \end{cases}\)
+\begin{gather}
+  F_n(x) = \begin{cases}  & 0 \text{ if } x < x_1\\  & \frac{1}{n} \text{ if } x_1 \leq x <x_2 \\  & \frac{2}{n} \text{ if } x_2 \leq x < x_3 \\  & \vdots \\  & \frac{n-1}{n}\text{ if } x = x_(n-1) \leq x < x_n \\  & 1 \ \text{if} \ x \geq x_n \end{cases}
+\end{gather}
 
 Thus \(F_n(x)\) is a step function, calculated from the data; as \(x\)
 increases it takes a step up of height \(\frac{1}{n}\) as each sample
@@ -918,15 +1029,16 @@ the mean. Distribution with higher kurtosis has more extreme values in
 the tails of the distribution, while a distribution with lower kurtosis
 has a more uniform distribution of values.
 
-\hypertarget{todo.-degrees-of-freedom.}{%
-\subsubsection{TODO. Degrees of
-Freedom.}\label{todo.-degrees-of-freedom.}}
+% Todo
+\hypertarget{degrees-of-freedom.}{%
+\subsubsection{Degrees of
+Freedom.}\label{degrees-of-freedom.}}
 
-\hypertarget{todo.-confidence-intervals.}{%
-\subsubsection{TODO. Confidence
-Intervals.}\label{todo.-confidence-intervals.}}
+% Todo
+\hypertarget{confidence-intervals.}{%
+\subsubsection{Confidence Intervals.}\label{confidence-intervals.}}
 
-    \hypertarget{statistical-tests}{%
+\hypertarget{statistical-tests}{%
 \subsection{Statistical Tests}\label{statistical-tests}}
 
 Is an assumption about a population which may or may not be true.
@@ -949,8 +1061,8 @@ Depending on the t-test, the test can determine whether: - One mean is
 different from a hypothesized value - Two group means are different -
 Paired means are different.
 
-\textbf{In statistics, if you don not satisfy the assumptions for a
-particular procedure, you might not be able to trust the results}
+\emph{''In statistics, if you don not satisfy the assumptions for a
+particular procedure, you might not be able to trust the results''}
 
 \hypertarget{one-sample-t-test.}{%
 \paragraph{One-Sample T-test.}\label{one-sample-t-test.}}
@@ -959,7 +1071,7 @@ Use a one-sample t-test to compare your sample mean to a hypothesized
 value for the population and to create a confidence interval of likely
 values for the population mean.
 
-\textbf{Assumptions} - You have a random sample - Your data must be
+Assumptions: You have a random sample - Your data must be
 continuous - Your sample data should follow a normal distribution or
 have more than 20 observations.
 
@@ -972,7 +1084,7 @@ have more than 20 observations.
 Use paired t-tests to assess dependent samples, which are two
 measurements on the same person or item.
 
-\textbf{Assumptions} - Dependent Samples Unlike two-sample t-test,
+Assumptions: Dependent Samples Unlike two-sample t-test,
 paired t-test use the same people or items in both groups. One way to
 determine whether a paired t-test is appropriate for your data is if
 each row in the dataset corresponds to one person or item.
@@ -1004,7 +1116,7 @@ sample mean, and dividing by the standard error of the mean.
   \(\mu = \mu_0\).
 \item
   \(H_A:\) The population mean DOES NOT equal a hypothesized value
-  \(\mu \neq \mu_0\)
+  \(\mu \neq  \mu_0\)
 \end{itemize}
 
 When the p-value is less or equal to your significance level, reject the
@@ -1108,10 +1220,16 @@ normal distribution. The test gives you a W value; small values indicate
 your sample is \emph{not} normally distributed. The formula for the W
 value is: 
 
+\begin{gather}
+  W=\frac{(\sum_{i=1}^n a_i x_i)^2}{(\sum_{i=1}^n (x_i - \overline{x}))^2}
+\end{gather}
 
-Where: - \$ X\_i \$ are the oredered random sample values - \$ a\_i \$
-are constants generated from the covariances, variances and means of the
-sample (size n) from a normally distributed sample.
+Where: 
+\begin{itemize}
+  \item \(X_i\) are the oredered random sample values
+  \item \(a_i\) are constants generated from the covariances, variances and means of the
+  sample (size n) from a normally distributed sample.
+\end{itemize}
 
 The test has limitations, most importantly that it has a bias by sample
 size. The larger the sample, the more likely you'll get a statistically
@@ -1136,13 +1254,19 @@ statistic}. It's like the t-value for the t-test or the F-value for the
 F-test. Typically you don't interpret this statistic directly, but the
 software uses it to calculate the p-value for the test.
 
-The hypotheses for the Anderson-Darling test are: - \(H_0\): The data
-follow a specified distribution - \(H_A\): The data do not follow a
-specified distribution
+The hypotheses for the Anderson-Darling test are:
+\begin{itemize}
+  \item \(H_0\): The data follow a specified distribution.
+  \item \(H_A\): The data do not follow a specified distribution.
+\end{itemize}
+
+
+ 
 
 The formula for the Anderson-Darling
 
-    \hypertarget{statistical-plots}{%
+% TODO: 
+\hypertarget{statistical-plots}{%
 \subsection{Statistical Plots}\label{statistical-plots}}
 
 \hypertarget{stem-and-leaf-plot}{%
@@ -1180,34 +1304,39 @@ distributed \(H_A:\) The data does not follow a normal distribution
   that the data do follow the distribution.
 \end{itemize}
 
+% TODO
 \hypertarget{p-p-plot}{%
 \subsubsection{P-P Plot}\label{p-p-plot}}
 
+% TODO
 \hypertarget{kernel-density-estimation}{%
-\subsubsection{Kernel density
-estimation}\label{kernel-density-estimation}}
+\subsubsection{Kernel density estimation}\label{kernel-density-estimation}}
 
+% TODO
 \hypertarget{correlation-and-association}{%
-\subsection{Correlation and
-Association}\label{correlation-and-association}}
+\subsection{Correlation and Association}\label{correlation-and-association}}
 
+% TODO
 \hypertarget{pearson-correlation-coefficient}{%
-\subsubsection{Pearson Correlation
-Coefficient}\label{pearson-correlation-coefficient}}
+\subsubsection{Pearson Correlation Coefficient}\label{pearson-correlation-coefficient}}
 
+% TODO
 \hypertarget{spearman-rank-correlation-coefficient}{%
-\subsubsection{Spearman Rank Correlation
-Coefficient}\label{spearman-rank-correlation-coefficient}}
+\subsubsection{Spearman Rank Correlation Coefficient}\label{spearman-rank-correlation-coefficient}}
 
+% TODO
 \hypertarget{covariance}{%
 \subsubsection{Covariance}\label{covariance}}
 
+% TODO
 \hypertarget{time-series-analysis}{%
 \subsection{Time Series Analysis}\label{time-series-analysis}}
 
+% TODO
 \hypertarget{moving-averages}{%
 \subsubsection{Moving Averages}\label{moving-averages}}
 
+% TODO
 \hypertarget{exponential-smoothing}{%
 \subsubsection{Exponential Smoothing}\label{exponential-smoothing}}
 
@@ -1469,19 +1598,19 @@ Control}\label{statistical-process-control}}
 \hypertarget{other-charts}{%
 \subsubsection{Other Charts}\label{other-charts}}
 
-    TODO. This may be wrong. \#\# Capability Analysis
+TODO. This may be wrong. 
+\hypertarget{capability-analysis}{%
+\subsection{Capability Analysis}\label{capability-analysis}}
 
-\hypertarget{difference-between-standard-deviations.}{%
-\subsubsection{Difference between Standard
-deviations.}\label{difference-between-standard-deviations.}}
+\hypertarget{different-standard-deviations.}{%
+\paragraph{Different Standard deviations used.}\label{different-standard-deviations.}}
 
 The calculation and definition of the different standard deviations in
 this sections is based upon what Minitab has in its documentation about
 Capability Analysis.
 
 \hypertarget{within-standard-deviation-sigma_within}{%
-\paragraph{\texorpdfstring{Within Standard Deviation
-\(\sigma_{within}\)}{Within Standard Deviation \textbackslash sigma\_\{within\}}}\label{within-standard-deviation-sigma_within}}
+\subsubsection{Within Standard Deviation \(\sigma_{within}\)}\label{within-standard-deviation-sigma_within}}
 
 It's an estimate of the variation within the subgroups. If your data is
 collected properly, the within-subgroup variation should not be
@@ -1550,10 +1679,8 @@ ranges that influence average of the moving ranges
 1}\label{todo.-subgroup-size-1}}
 
 \hypertarget{overall-standard-deviation-sigma_overall}{%
-\paragraph{\texorpdfstring{Overall Standard Deviation
-\(\sigma_{overall}\)}{Overall Standard Deviation \textbackslash sigma\_\{overall\}}}\label{overall-standard-deviation-sigma_overall}}
-
-\textbf{Is the standard deviation of all the measurements} and is an
+\subsubsection{Overall Standard Deviation \(\sigma_{overall}\)}\label{overall-standard-deviation-sigma_overall}}
+Is the standard deviation of all the measurements and is an
 estimate of the overall variation of the process. If your data are
 collected properly, the overall standard deviation captures all sources
 of systemic variation. In that case, it represents the \emph{actual}
@@ -1561,29 +1688,43 @@ variation of the process that the customer experiences over time.
 \textbf{It is used to calculate the PP and PPK values, and other
 measures of the overall capability of the process}
 
-Unbiased estimator of \(\sigma_{overall} = \frac{S}{C_4(N)}\)
+Unbiased estimator of \(\sigma_{overall}\)
 
-\(S =\) Standard Deviation for all samples with subgroups: -
-\(S = \sqrt{\frac{\sum_i \sum_j (x_{ij} - \bar{x})^2}{(\sum n_i) - 1}}\)
+\begin{gather}
+  \sigma_{overall}= \frac{S}{C_4(N)}
+\end{gather}
 
-Where: - \$x\_\{ij\} = \$ The \(j^{th}\) observation of the \(i^{th}\)
-subgroup - \\bar x = \ Process mean - n\_i = \ Number of
-observation in the \(i^{th}\) subgroup - C\_4 (N) = \ Unbiasing
-constant. - \(N = \sum n_i =\) Total number of observations
+% Todo. Explain further
+\(S\) being the Standard Deviation for all samples with subgroups:
+\begin{gather}
+  S = \sqrt{\frac{\sum_i \sum_j (x_{ij} - \bar{x})^2}{(\sum n_i) - 1}}
+\end{gather}
+
+Where: 
+\begin{itemize}
+  \item \(x_{ij} = \) The \(j^{th}\) observation of the \(i^{th}\) subgroup 
+  \item  \(\bar x =\) Process mean 
+  \item \(n_i = \) Number of observation in the \(i^{th}\) subgroup.
+  \item \(C_4(N) = \) Unbiasing constant. 
+  \item \(N = \sum n_i =\) Total number of observations.
+\end{itemize}
+
 
 \emph{Note, it is usually best practice to not use the unbiasing
 constant when estimating \(\sigma_{overall}\), you should estimate
-\(\sigma_{overall}\) by \(S\) directly}
+\(\sigma_{overall}\) by \(S\) directly.}
 
 If there are no subgroups, then the formula for \(S\) is just:
-\(S = \sqrt{\frac{\sum^N_{i=1} (x_i - \bar x)^2}{N-1}}\)
+\begin{gather}
+  S = \sqrt{\frac{\sum^N_{i=1} (x_i - \bar x)^2}{N-1}}
+\end{gather}
 
 Where: \(S\) = Sample standard deviation \(N\) = The number of
-observations \(x_i\) = The observed values of a sample item
-\(\overline {x}\) = The mean value of the observations
+observations \(x_i\) = The observed values of a sample item and
+\(\overline {x}\) = The mean value of the observations.
 
 \hypertarget{between-standard-deviation}{%
-\paragraph{Between Standard
+\subsubsection{Between Standard
 Deviation}\label{between-standard-deviation}}
 
 Is an estimate of the variation between the subgroups. For example, if
@@ -1593,7 +1734,7 @@ variability between the items in different batches. \textbf{It is used
 calculate the between/within subgroup variation}
 
 \hypertarget{bw-standard-deviation}{%
-\paragraph{B/W Standard Deviation}\label{bw-standard-deviation}}
+\subsubsection{B/W Standard Deviation}\label{bw-standard-deviation}}
 
 Is a single value that includes both the variation between subgroups and
 the variation within subgroups. It's the square root of the sum of the
@@ -1601,24 +1742,29 @@ between-subgroup variance and the within-subgroup-variance. \textbf{It
 is used calculate CP, CPK and other measures of the between/within
 capability of a process}
 
-    \hypertarget{capability-indices}{%
+\hypertarget{capability-indices}{%
 \subsubsection{Capability Indices}\label{capability-indices}}
 
 \hypertarget{cp}{%
 \paragraph{CP}\label{cp}}
 
 CP is a measure of the potential capability of the process. It is a
-ratio comparing two vales. - The specification spread (USL - LSL) - The
+ratio comparing two vales. The specification spread \((USL - LSL)\) - The
 spread of the process based on the standard deviation. - \textbf{Cp
 evaluates potencial capability based on the variation in your process,
 not its location}
 
-\(Cp = \frac{USL - LSL}{TOL \times \hat{\sigma}_{within}}\)
+\begin{gather}
+  Cp = \frac{USL - LSL}{TOL \times \hat{\sigma}_{within}}
+\end{gather}
 
-Where: - \(USL =\) Upper specification limit - \(LSL =\) Lower
-specification limit - \(TOL =\) Multiplier of the sigma tolerance
-\textbf{(it's usually six)} - \(\hat{\sigma}_{within} =\) Within
-standard deviation
+Where: 
+\begin{itemize}
+  \item \(USL =\) Upper specification limit
+  \item \(LSL =\) Lower specification limit
+  \item \(TOL =\) Multiplier of the sigma tolerance \emph{Usually six}
+  \item \(\hat{\sigma}_{within} =\) Within  standard deviation
+\end{itemize}
 
 Interpretation Because CP doesn't consider the location of the process,
 it indicates the potencial capability that your process could achieve if
@@ -1635,7 +1781,9 @@ the within subgroup standard deviation.
 Because CPl considers both the process mean and the process spread, it
 evaluates both the location and the variation of th eprocess.
 
-\(CPL = \frac{\bar{x} - LSL}{(\frac{TOLER}{2})\hat{\sigma}_{within}}\)
+\begin{gather}
+  CPL = \frac{\bar{x} - LSL}{(\frac{TOLER}{2})\hat{\sigma}_{within}}
+\end{gather}
 
 \hypertarget{cpu}{%
 \paragraph{CPU}\label{cpu}}
@@ -1645,7 +1793,9 @@ upper specificaction limit.Compares two values: - The distance from the
 process mean to the USL - The one-sided spread of the process based on
 the variation within the subgroups.
 
-\(CPU = \frac{USL - \bar{x} }{(\frac{TOL}{2})\hat{\sigma}_{within}}\)
+\begin{gather}
+  CPU = \frac{USL - \bar{x} }{(\frac{TOL}{2})\hat{\sigma}_{within}}
+\end{gather}
 
 \hypertarget{cpk}{%
 \paragraph{CPK}\label{cpk}}
@@ -1655,10 +1805,11 @@ the minimum of the CPU and CPL. Use CPK to evaluate the potential
 capability of your process based on both the process location and the
 process spread. Potential capability indicates the capability that could
 be achieved if the process shifts and drifts were eliminated.
+\begin{gather}
+  CPK = min(CPU, CPL)
+\end{gather}
 
-\(CPK = min(CPU, CPL)\)
-
-https://www.six-sigma-material.com/Cpk.html
+\href{https://www.six-sigma-material.com/Cpk.html}{For more information click here.}
 
 \hypertarget{pp}{%
 \paragraph{PP}\label{pp}}
@@ -1679,21 +1830,25 @@ standard deviation
 
 \hypertarget{todo.-ppu}{%
 \paragraph{Todo. PPU}\label{todo.-ppu}}
-
-\(PPU = \frac{USL - \mu }{(\frac{TOL}{2})\hat{\sigma}_{overall}}\)
+\begin{gather}
+  PPU = \frac{USL - \mu }{(\frac{TOL}{2})\hat{\sigma}_{overall}}
+\end{gather}
 
 \hypertarget{todo.-ppl}{%
 \paragraph{Todo. PPL}\label{todo.-ppl}}
 
-\(PPL = \frac{\mu - LSL}{(\frac{TOL}{2})\hat{\sigma}_{overall}}\)
+\begin{gather}
+  PPL = \frac{\mu - LSL}{(\frac{TOL}{2})\hat{\sigma}_{overall}}
+\end{gather}
 
 \hypertarget{todo.-ppk}{%
 \paragraph{Todo. PPK}\label{todo.-ppk}}
 
 It's a measure of the overall capability of the process and its equals
 to the minimum of the PPU and PPL
-
-\(PPK = min(PPU, PPL)\)
+\begin{gather}
+  PPK = min(PPU, PPL)
+\end{gather}
 
 \hypertarget{ppm}{%
 \paragraph{PPM}\label{ppm}}
@@ -1702,6 +1857,11 @@ PPM is the expected number of parts per million that are outside of the
 specification limits, it's based on the overall variation of the
 process.
 
+% Todo fix this.
+\begin{gather}
+  [PPM < LSL(\text{Exp. Overall})] + [PPM > USL(\text{Exp. Overall})] 
+  \\ = \left (1,000,000 \times \left [1 - \phi \left (\frac{\bar X - LSL}{S} \right) \right] \right) + \left (1,000,000 \times \left [1 - \phi \left(\frac{USL - \bar x}{S} \right ) \right ] \right )
+\end{gather}
 
 
 Todo. Summarize: This formula is used in statistical process control to
@@ -1711,15 +1871,16 @@ million (PPM) that fall below the lower specification limit (LSL) or
 above the upper specification limit (USL), and then adding those two
 values together.
 
+% Todo. I was here... 
 Here is a step-by-step explanation of the formula:
 
-PPM \textless{} LSL(Exp. Overall) represents the number of defective
+\paragraph{PPM \textless{} LSL(Exp. Overall)} represents the number of defective
 parts that fall below the lower specification limit (LSL) when the
 overall process is expected to be in control. The term ``Exp. Overall''
 refers to the expected overall process capability, which is typically
 determined using historical data or engineering analysis.
 
-PPM \textgreater{} USL(Exp. Overall) represents the number of defective
+\paragraph{PPM \textgreater{} USL(Exp. Overall)} represents the number of defective
 parts that fall above the upper specification limit (USL) when the
 overall process is expected to be in control.
 
