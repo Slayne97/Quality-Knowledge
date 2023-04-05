@@ -780,8 +780,25 @@ In SPC, proving that the alternative hypothesis is true means that the
 process is not under statistical control, and it's affected by some
 non-random variation (special variation).
 
+\hypertarget{type_1_errors}{%
+\subsubsection{Type I Errors}\label{type_1_errors}}
+
+\hypertarget{type_2_errors}{%
+\subsubsection{Type II Errors}\label{type_2_errors}}
+
+\hypertarget{p-values}{%
+\subsubsection{P Values}\label{p-values}}
+The p-value in is the probability that the measured difference would occur 
+due to random chance alone if the null hypothesis were true. 
+
+
+
+\hypertarget{significance-levels}{%
+\subsubsection{Significance Levels}\label{significance-levels}}
+
+
 \hypertarget{directional-hypothesis}{%
-\subsubsection{TODO - Add Image: Directional Hypothesis}\label{directional-hypothesis}}
+\paragraph{TODO - Add Image: Directional Hypothesis}\label{directional-hypothesis}}
 
 In the Directional Hypothesis, the null hypothesis is rejected if the
 test score is too large or too small. Thus, the rejection region for
@@ -790,7 +807,7 @@ right-tailed test or the rejection region is on the left side from the
 center in the case of a left-tailed test.
 
 \hypertarget{non-directional-hypothesis}{%
-\subsubsection{TODO - Add Image: Non-Directional Hypothesis}\label{non-directional-hypothesis}}
+\paragraph{TODO - Add Image: Non-Directional Hypothesis}\label{non-directional-hypothesis}}
 
 In a non-directional hypothesis test, the null hypothesis is rejected if
 the test score is either too small or too large. Thus, the rejection
@@ -818,13 +835,15 @@ significant.}
 \end{itemize}
 
 \hypertarget{failure-to-reject-the-null}{%
-\subsubsection{Failure to Reject the
-Null}\label{failure-to-reject-the-null}}
+\paragraph{Failure to Reject the Null}\label{failure-to-reject-the-null}}
 
 A lack of evidence isn't proof that something doesn't exist. You just
 haven't proven that it exists. It might exist, but your study missed it.
 That's a huge difference, and it is the reason for the convoluted
 wording.
+
+
+
 
 \hypertarget{criminal-trials}{%
 \paragraph{Criminal Trials}\label{criminal-trials}}
@@ -931,8 +950,9 @@ evidentiary standard that researchers set before the study.
 \hypertarget{p-values}{%
 \subsubsection{P Values}\label{p-values}}
 
-The p-value is the smallest significance level at which the null
-hypothesis is rejected.
+The p-value is a number, calculated from a statistical test, that describes how
+likely you are to have found a particular set of observations if the null hypothesis were true.
+
 
 When you perform a statistical test, a p-value helps you determine the
 significance of your results in relation to the null hypothesis. It is a
@@ -952,8 +972,15 @@ null hypothesis.
   indicates strong evidence for the null hypothesis.
 \end{itemize}
 
-In simpler terms, p-values tell you how strongly your sample data
-contradict the null.
+The p-value calculates the likelihood of your test statistic. In other words, 
+the p-value tells you how often you would expect to see a test statistic as extreme
+or more extreme than the one calculated by yous statistical test if the null hypothesis of
+that test was true. 
+
+\paragraph{Calculation of the P-value} The calculation of the p-value depends
+on the statistical test you are using to test your hypothesis and the degrees of freedom
+of your test. No matter what test you use, the p-value always describes the same thing: 
+\emph{How often you can expect to see a test statistic as extreme or more extreme than the one calculated from your test}
 
 \hypertarget{probability-density-function}{%
 \subsubsection{Probability Density
@@ -1057,12 +1084,24 @@ t-value. If the t-value is large, it means that the difference between
 the groups is likely not due to chance, and we can conclude that there's
 a significant difference between them.
 
-Depending on the t-test, the test can determine whether: - One mean is
-different from a hypothesized value - Two group means are different -
-Paired means are different.
+\href{https://www.youtube.com/watch?v=2ARvj-8tJBs}{Here's good video explaing this.}
 
-\emph{''In statistics, if you don not satisfy the assumptions for a
-particular procedure, you might not be able to trust the results''}
+A T-test: 
+\begin{itemize}
+  \item Assumes the null hypothesis is true and then evaluates whether is that is a bad assumtion.
+  \item The p-value tells us the probability that the two datasets would have differed
+        due to random chance under the assumption of the null hypothesis.
+  \item If \(p < 0.05\), you can reject the null hypothesis. This corresponds to a 95 \% confidence interval
+  \item A T-tes can be paired (you tested the same group twice) or unpaired (you tested two different groups).
+\end{itemize}
+
+
+Depending on the t-test, the test can determine whether:
+\begin{itemize}
+  \item One mean is different from a hypothesized value
+  \item Two group means are different
+  \item Paired means are different.
+\end{itemize}
 
 \hypertarget{one-sample-t-test.}{%
 \paragraph{One-Sample T-test.}\label{one-sample-t-test.}}
@@ -1071,29 +1110,59 @@ Use a one-sample t-test to compare your sample mean to a hypothesized
 value for the population and to create a confidence interval of likely
 values for the population mean.
 
+In example, you use the one-sample t-test when one group is compared against
+a standard value, like the acidity of a liquitd to a neutral pH of 7. 
+
+The formula for a one sample t-test: 
+\begin{gather}
+  t = \frac{\bar x - \mu_0}{s / \sqrt n}
+\end{gather}
+
+Where:
+\begin{itemize}
+  \item \(\mu_9 = \) The hypothesized mean. 
+  \item \(\bar x = \) Is the sample mean. 
+  \item \(s =\) The sample standard deviation. 
+  \item \(n =\) The sample size. 
+\end{itemize}
+
 Assumptions: You have a random sample - Your data must be
 continuous - Your sample data should follow a normal distribution or
 have more than 20 observations.
 
-\hypertarget{todo.-two-sample-t-tests}{%
-\paragraph{TODO. Two-Sample t-tests}\label{todo.-two-sample-t-tests}}
+\hypertarget{two-sample-t-test.}{%
+\paragraph{Two-Sample T-test.}\label{two-sample-t-test.}}
+
+You use the two-sample t-test when the two groups you're studying come from two
+different populations.
+
+The formula for the two-sample t-test:
+\begin{gather}
+  t = \frac{\bar x_1 - \bar x_2}{\sqrt{s_p \left (\frac{1}{n_1} + \frac{1}{n_2}\right )}}
+\end{gather}
+
+Where:
+\begin{itemize}
+  \item \(t = \) The t value. 
+  \item \(x_1\) and \(x_2\) are the means of the two groups being compared. 
+  \item \(s_p = \) The pooled standard error of the two groups. 
+\end{itemize}
 
 \hypertarget{paired-t-tests}{%
 \paragraph{Paired t-tests}\label{paired-t-tests}}
 
 Use paired t-tests to assess dependent samples, which are two
-measurements on the same person or item.
+measurements on the same population, an example would be measuring 
+before and after an experimental treatment.
+
+\href{https://libguides.library.kent.edu/spss/pairedsamplesttest}{TODO}
 
 Assumptions: Dependent Samples Unlike two-sample t-test,
 paired t-test use the same people or items in both groups. One way to
 determine whether a paired t-test is appropriate for your data is if
 each row in the dataset corresponds to one person or item.
 
-\hypertarget{two-sample-t-test.}{%
-\paragraph{Two-Sample T-test.}\label{two-sample-t-test.}}
 
-If the t-value is small, it means that the difference could be due to
-chance, and we cannot confidently say that the two groups are different.
 
 \hypertarget{z-test}{%
 \subsubsection{Z-Test}\label{z-test}}
@@ -1141,7 +1210,7 @@ reject the null hypothesis.
 \(Z = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\frac{\sigma^2_1}{n_1} + \frac{\sigma^2_1}{n_2}}}\)
 
 \hypertarget{z-test-vs-t-test}{%
-\subsubsection{Z-Test vs T-test}\label{z-test-vs-t-test}}
+\paragraph{Z-Test vs T-test}\label{z-test-vs-t-test}}
 
 Z-test require you to know the population standard deviation, while
 t-test use a sample estimate of the standard deviation. In practice,
@@ -1153,9 +1222,6 @@ yet need to assess an unknown population mean.
 deviation, use a Z-test. When you have a sample estimate of the standard
 deviation, the best practice is to use a t-test, regardless of the
 sample size.
-
-\hypertarget{analysis-of-variance}{%
-\subsubsection{Analysis of Variance}\label{analysis-of-variance}}
 
 \hypertarget{normality-test-and-goodness-of-fit}{%
 \subsubsection{Normality Test and Goodness of
@@ -1261,9 +1327,11 @@ The hypotheses for the Anderson-Darling test are:
 \end{itemize}
 
 
- 
-
 The formula for the Anderson-Darling
+\hypertarget{analysis-of-variance}{%
+\subsection{Analysis of Variance}\label{analysis-of-variance}}
+I've decided that Analysis of Variance should have its own chapter.
+
 
 % TODO: 
 \hypertarget{statistical-plots}{%
