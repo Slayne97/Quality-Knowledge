@@ -657,17 +657,13 @@ be equal to one, this can be accomplished
 \href{https://youtu.be/cy8r7WSuT1I}{dividing by the square root of
 pi}:
 
-\begin{center}
-  \(\frac{1}{\sqrt\pi} e^{-x^2}\)
-\end{center}
+$$\frac{1}{\sqrt\pi} e^{-x^2}$$
 
 But, we would like to describe our function by the standard deviation
 \(\sigma\), so we also need to divide by that in order to the curve to
 still have an area of 1.
 
-\begin{center}
-  \(\frac{1}{\sigma \sqrt{2\pi}} \ e^{-\frac{1}{2} \left (\frac{x}{\sigma} \right)^2}\)
-\end{center}
+$$ \frac{1}{\sigma \sqrt{2\pi}} \ e^{-\frac{1}{2} \left (\frac{x}{\sigma} \right)^2} $$
 
 And this is already a valid normal distribution. Tweaking the value
 \(\sigma\) resulting in narrower or wider curves, would still mean that
@@ -686,9 +682,8 @@ Finally, if we subtract the mean \(\mu\) we can characterize all
 possible normal distributions, and this gives us the final Standard Normal Distribution 
 formula that we've seen.
 
-\begin{center}
-  \(\frac{1}{\sigma \sqrt{2\pi}} \ e^{-\frac{1}{2}(\frac{x - \mu }{\sigma})^2}\)
-\end{center}
+
+\[\frac{1}{\sigma \sqrt{2\pi}} \ e^{-\frac{1}{2}(\frac{x - \mu }{\sigma})^2}\]
 
 \hypertarget{properties-of-the-normal-distribution}{%
 \paragraph{Properties}\label{properties-of-the-normal-distribution}}
@@ -1190,8 +1185,9 @@ sample mean, and dividing by the standard error of the mean.
 
 When the p-value is less or equal to your significance level, reject the
 null hypothesis.
-
-\(Z = \frac{\bar{x} - \mu_0}{\frac{\sigma}{\sqrt{n}}}\)
+\begin{gather}
+  Z = \frac{\bar{x} - \mu_0}{\frac{\sigma}{\sqrt{n}}}
+\end{gather}
 
 \hypertarget{two-sample-z-test}{%
 \paragraph{Two-Sample Z test}\label{two-sample-z-test}}
@@ -1207,7 +1203,9 @@ null hypothesis.
 Again, if the p-value is less than or equal to your significance level,
 reject the null hypothesis.
 
-\(Z = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\frac{\sigma^2_1}{n_1} + \frac{\sigma^2_1}{n_2}}}\)
+\begin{gather}
+  Z = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\frac{\sigma^2_1}{n_1} + \frac{\sigma^2_1}{n_2}}}
+\end{gather}
 
 \hypertarget{z-test-vs-t-test}{%
 \paragraph{Z-Test vs T-test}\label{z-test-vs-t-test}}
@@ -1287,7 +1285,7 @@ your sample is \emph{not} normally distributed. The formula for the W
 value is: 
 
 \begin{gather}
-  W=\frac{(\sum_{i=1}^n a_i x_i)^2}{(\sum_{i=1}^n (x_i - \overline{x}))^2}
+  W=\frac{\left (\sum_{i=1}^n a_i x_i \right )^2}{(\sum_{i=1}^n (x_i - \overline{x}))^2}
 \end{gather}
 
 Where: 
@@ -2022,69 +2020,68 @@ PPM is the expected number of parts per million that are outside of the
 specification limits, it's based on the overall variation of the
 process.
 
-% Todo fix this.
 \begin{gather}
   [PPM < LSL(\text{Exp. Overall})] + [PPM > USL(\text{Exp. Overall})] 
-  \\ = \left (1,000,000 \times \left [1 - \phi \left (\frac{\bar X - LSL}{S} \right) \right] \right) + \left (1,000,000 \times \left [1 - \phi \left(\frac{USL - \bar x}{S} \right ) \right ] \right )
+  \\ = \left (1,000,000 \times \left [1 - \phi \left (\frac{\bar x - LSL}{S} \right ) \right ] \right ) + \left (1,000,000 \times \left [1 - \phi \left (\frac{USL - \bar x}{S} \right ) \right ] \right )
 \end{gather}
 
+This formula is used in statistical process control to estimate the number
+of defective parts or products in a manufacturing process. It involves two main steps:
 
-Todo. Summarize: This formula is used in statistical process control to
-calculate the number of defective parts or products in a manufacturing
-process. The formula involves calculating the number of parts per
-million (PPM) that fall below the lower specification limit (LSL) or
-above the upper specification limit (USL), and then adding those two
-values together.
+First, calculate the number of parts per million (PPM) that fall
+below the lower specification limit (LSL) or above the upper
+specification limit (USL), given the expected overall process
+capability. This is done using the cumulative distribution function (CDF) of a standard normal distribution.
 
+Second, add the two PPM values together to get the total estimated number of defective parts.
+
+Here is a step-by-step explanation of the formula:
+
+\begin{itemize}
+  \item \(PPM < LSL(Exp. Overall)\) 
+  \\ Represents the number of defective parts that fall below the lower specification limit (LSL) when the
+  overall process is expected to be in control. 
+  \\ The term ``Exp. Overall'' refers to the expected overall process capability, which is typically
+  determined using historical data or engineering analysis.
+
+  \item \(PPM > USL(Exp. Overall)\) 
+  \\ Represents the number of defective parts that fall above the
+  upper specification limit (USL) when the overall process is expected to be in control.
+
+  \item \( 1,000,000 \times [1 - \phi ( (\bar x - LSL)/S) ]\)
+  \\ This term calculates the PPM of defective parts that fall below the LSL. It uses the CDF of a standard normal distribution to find the proportion of the process data that fall below the expected LSL.
+  \\ The term \( (\bar x - LSL)/S \) represents the number of standard deviations the process mean \(\bar x\) is below the LSL.
+  
+  \item \( 1,000,000 \times [1 - \phi ( (USL - \bar x )/S) ]\)
+  \\ This term calculates the PPM of defective parts that fall above the USL. It uses the CDF of a standard normal distribution to find the proportion of the process data that fall above the expected USL.
+  \\ The term \( (USl - \bar x)/S\) represents the number of standard deviations the process mean \(\bar x\) is above the USL. 
+
+\end{itemize}
 % Todo. I was here... 
 Here is a step-by-step explanation of the formula:
 
-\paragraph{PPM \textless{} LSL(Exp. Overall)} represents the number of defective
-parts that fall below the lower specification limit (LSL) when the
-overall process is expected to be in control. The term ``Exp. Overall''
-refers to the expected overall process capability, which is typically
-determined using historical data or engineering analysis.
+\begin{itemize}
+  \item \(PPM < LSL(Exp. Overall)\) 
+  \\ Represents the number of defective parts that fall below the lower specification limit (LSL) when the
+  overall process is expected to be in control. 
+  \\ The term ``Exp. Overall'' refers to the expected overall process capability, which is typically
+  determined using historical data or engineering analysis.
 
-\paragraph{PPM \textgreater{} USL(Exp. Overall)} represents the number of defective
-parts that fall above the upper specification limit (USL) when the
-overall process is expected to be in control.
+  \item \(PPM > USL(Exp. Overall)\) 
+  \\ Represents the number of defective parts that fall above the
+  upper specification limit (USL) when the overall process is expected to be in control.
 
-The expression {[}PPM \textless{} LSL(Exp. Overall){]} calculates the
-number of defective parts that fall below the LSL. It is calculated as
-follows:
+  \item \( \frac{\bar x - LSL}{S} = Z_{LSL} \) 
+  \\ \(Z_{LSL}\) Represents the number of standard deviations the process mean \(\bar x\) is below the lower specification limit (LSL)
+  
+  \item \( \frac{USL - \bar x}{S} = Z_{USL} \) 
+  \\ \(Z_{USL}\) Irepresents the number of standard deviations the process mean \(\bar x\) is below the lower specification limit (LSL)  
 
-First, we calculate the standardized Z-score for the LSL using the
-
-
-Then, we use the cumulative distribution function (CDF) of the standard
-normal distribution, denoted by φ, to calculate the probability of a
-standard normal variable falling below the Z-score:
-
-φ(Z) = P(Z \textless{} z)
-
-Finally, we multiply this probability by one million to convert it to
-parts per million:
-
-The expression {[}PPM \textgreater{} USL(Exp. Overall){]} calculates the
-number of defective parts that fall above the USL. It is calculated
-similarly to the first expression, but using the USL instead of the LSL:
-
-First, we calculate the standardized Z-score for the USL:
-
-Then, we use the cumulative distribution function of the standard normal
-distribution to calculate the probability of a standard normal variable
-falling above the Z-score:
-
-φ(Z) = P(Z \textgreater{} z)
-
-Finally, we multiply this probability by one million:
-
-The total number of defective parts is the sum of the two expressions:
-
-PPM = PPM \textless{} LSL(Exp. Overall) + PPM \textgreater{} USL(Exp.
-Overall)
-
-Putting it all together, we have:
+  \item  \( \phi (\cdot) \) Is the Cumulative Distribution Function (CDF) of a standard normal distribution.
+  \\ The CDF of the standard normal distribution is used to find the proportion of the process data that fall below the expected LSL
+  \item  \( \phi (Z_{LSL}) \) The CDF of the standard normal distribution is used to find the proportion of the process data that fall below the expected LSL
+  \item  \( \phi (Z_{USL}) \) The CDF of the standard normal distribution is used to find the proportion of the process data that fall above the expected USL
+\end{itemize}
 
 \hypertarget{resources}{%
 \paragraph{Resources}\label{resources}}
@@ -2188,7 +2185,9 @@ The Quality Loss Function is used to estimate costs when the product or
 process characteristics are shifted from the target value. This is
 represented by the following equation:
 
-\(L(Y) = k(y-T)^2\)
+\begin{gather}
+  L(Y) = k(y-T)^2
+\end{gather}
 
 Where: \(L(Y)\) is the cost incurred when the characteristic \(y\) is
 shifted from the target \(T\) and \(k\) is a constant depending on the
@@ -2215,7 +2214,7 @@ The prime value of a quality cost system is in identifying opportunities
 for improvement and then providing a measurement of that improvement
 over time.
 
-Short-range bases should be directly relted by time and location to
+Short-range bases should be directly related by time and location to
 quality costs as they are being incurred and reported. They should
 relate the cost of quality to the amount of work performed.
 
